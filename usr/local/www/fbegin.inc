@@ -131,6 +131,7 @@ $firewall_menu[] = array(gettext("Rules"), "/firewall_rules.php");
 $firewall_menu[] = array(gettext("Schedules"), "/firewall_schedule.php");
 $firewall_menu[] = array(gettext("Traffic Shaper"), "/firewall_shaper.php");
 $firewall_menu[] = array(gettext("Virtual IPs"), "/firewall_virtual_ip.php");
+$firewall_menu[] = array(gettext("Custom Rules"), "/firewall_custom_rules.php");
 $firewall_menu = msort(array_merge($firewall_menu, return_ext_menu("Firewall")),0);
 
 // Services
@@ -241,9 +242,9 @@ if (isset($config['system']['developer'])) {
 }
 $diagnostics_menu = msort(array_merge($diagnostics_menu, return_ext_menu("Diagnostics")),0);
 
-$gold_menu = array();
-$gold_menu[] = array(gettext("pfSense Gold"), "https://www.pfsense.org/gold");
-$gold_menu = msort(array_merge($gold_menu, return_ext_menu("Gold")),0);
+//$gold_menu = array();
+//$gold_menu[] = array(gettext("pfSense Gold"), "https://www.pfsense.org/gold");
+//$gold_menu = msort(array_merge($gold_menu, return_ext_menu("Gold")),0);
 
 if(! $g['disablehelpmenu']) {
 	$help_menu = array();
@@ -336,14 +337,14 @@ if(! $g['disablehelpmenu']) {
 						?>
 						</ul>
 					</li>
-					<li class="drop">
+					<!--<li class="drop">
 						<div><?php echo gettext("Gold"); ?></div>
 						<ul id="gold" class="subdrop">
 						<?php
 							output_menu($gold_menu, "_blank");
 						?>
 						</ul>
-					</li>
+					</li>-->
 					<?php if(! $g['disablehelpmenu']): ?>
 					<li class="lastdrop">
 						<div><?php echo gettext("Help"); ?></div>
