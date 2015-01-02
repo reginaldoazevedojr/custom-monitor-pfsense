@@ -26,13 +26,13 @@ if(isset($config['custom_monitor'])){
     if($config['custom_monitor'] != ""){
         $i = 0;
         foreach($config['custom_monitor'] as $key=>$custom_monitor){
-            $name = explode("_", $key);
-            $registered .= ' <div id="group_'. $i .'"><p><b>'.$name[1].'</b><button style="margin-left: 705px;" title="'.$name[1].'" class="closeTracking">Close</button></p><div style="border: 1px gray solid;padding: 10px;">';
+            $name = str_replace("DEST_", "", strtoupper($key));     
+            $registered .= ' <div id="group_'. $i .'"><p><b>'.strtoupper($name).'</b><button style="margin-left: 705px;" title="'.$name[1].'" class="closeTracking">Close</button></p><div style="border: 1px gray solid;padding: 10px;">';
             foreach ($custom_monitor as $index=>$link){
                 $registered .= '<p>
                                     <label>'.strtoupper($index).'</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label>Remote IP</label>&nbsp;<input type="text" name="group[dest_'.$name[1].']['.$index.']" value="'.$link.'" />
+                                    <label>Remote IP</label>&nbsp;<input type="text" name="group[dest_'.$name.']['.$index.']" value="'.$link.'" />
                                   </p>';
             }
             $registered .= '</div></div>';

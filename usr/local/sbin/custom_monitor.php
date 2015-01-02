@@ -20,8 +20,8 @@ if (
     
     if (is_array($custom_monitor)) {
         foreach ($custom_monitor as $key => $value) {
-            $destination = explode("_", $key);
-            if ($_GET['destination'] == $destination[1]) {
+            $destination = str_replace("DEST_", "", strtoupper($key));        
+            if ($_GET['destination'] == $destination) {
                 $config = changePriority(
                         $config, $_GET['gateway'], $_GET['priority'], $_GET['link']
                 );
