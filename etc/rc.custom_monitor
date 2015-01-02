@@ -1,0 +1,79 @@
+#!/usr/local/bin/php -f 
+<?php
+
+require_once("functions.inc");
+require_once("filter.inc");
+require_once("shaper.inc");
+
+$in = 0;
+
+if(isset($_GET['start']) || isset($_GET['START'])){
+    $in = 1;
+    $config['revision'] = make_config_revision_entry("Unknown");
+    $xmlconfig = dump_xml_config($config, $g['xml_rootobj']);
+    $config = parse_xml_config("{$g['conf_path']}/config.xml", $g['xml_rootobj']);
+    $custom_monitor = $config['custom_monitor'];
+
+    if($custom_monitor == ""){
+        print "nada a fazer\n";
+        exit;
+    }
+    foreach($custom_monitor as $key=>$val){
+        $aliase = explode("_", $key);    
+        $destination = $aliase[1];
+        $gateway = getLoadBalance($config, $destination);
+        foreach ($val as $index=>$ip){
+            $link = strtoupper($index);
+            $priority = getPriority($config, $gateway, $link);        
+            $ipInterface = getIpLink($config, $link);        
+            system("/usr/local/sbin/failover.sh $ipInterface $ip $destination $gateway $priority $link > /dev/null &");
+        }    
+    }
+}
+
+if(isset($_GET['stop']) || isset($_GET['STOP'])){
+    $in = 1;
+    system("kill -9 `ps -aux | grep failover.sh | sed q | awk '{print $2}'`");
+}
+
+if($in == 0){
+    print "\n\tUsage: {start|stop}\n\n";
+}
+
+function getLoadBalance($config, $destination){
+    $rule = $config["filter"]['rule'];    
+    foreach ($rule as $dados) {
+        if ($dados['interface'] == 'lan') {
+            if($dados['destination']['address'] == $destination){
+                $loadBalance =  $dados['gateway'];
+                return $loadBalance;
+            }
+        }
+    }
+}
+
+function getPriority($config, $gateway, $link) {
+    foreach ($config["gateways"]["gateway_group"] as $keyGate => $data_gateway) {
+        if ($data_gateway['name'] == $gateway) {
+            foreach ($data_gateway['item'] as $keyItem => $item) {
+                $index = explode("|", $item);
+                if ($index[0] == $link) {
+                    return $index[1];
+                }
+            }
+        }
+    }
+}
+
+function getIpLink($config, $gateway){
+    foreach ($config["gateways"]["gateway_item"] as $index => $value) {
+        if ($value['name'] == $gateway) {
+            $interface = $value['interface'];
+            foreach($config['interfaces'] as $name=>$dados){
+                if($name == $interface){
+                    return $dados['ipaddr'];
+                }
+            }
+        }
+    }    
+}

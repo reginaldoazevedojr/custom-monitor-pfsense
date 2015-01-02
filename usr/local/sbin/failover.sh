@@ -1,73 +1,58 @@
 #!/bin/sh
 
 while [ 1 -eq 1 ]
-do    
+do        
     total=0
     prevent=3
+    swap=0
+    priority=$5
     for i in 2 3 4 5 6 7 8
     do
-        conn=`ping -c 1 localhost | egrep "ttl" | sed -r "s/(.*)(ttl)=([0-9]+)(.*)/\2/g"`
+        conn=`ping -t 3 -c 1 -S $1 $2 | egrep "ttl" | sed -r "s/(.*)(ttl)=([0-9]+)(.*)/\2/g"`        
         val=`echo 2^$i | bc`                
-        if [ $conn = "ttl" ]; then
-            total=`echo $total+$val | bc`
-            prevent=1
-        else
+         if [ -z $conn ]; then
+            total=`echo $total+$val*-1 | bc`
+            if [ $prevent -eq 1 ]; then
+               swap=$swap+1
+            fi
             prevent=0
+        fi                
+        if [ "$conn" = "ttl" ]; then
+            total=`echo $total+$val | bc`
+            if [ prevent = 0 ]; then
+                swap=$swap+1
+            fi
+            prevent=1
         fi        
     done        
+    if [ $total -ge -300 -a $total -le 300 ]; then
+        if [ $swap -ge 4 ]; then
+            if [ $priority != 1 ]; then
+                php /usr/local/sbin/custom_monitor.php destination=$3 gateway=$4 priority=1 link=$6
+                priority=1
+            fi
+            echo "instavel"
+        else
+            echo "indeterminado"
+        fi        
+    fi
+    if [ $total -lt -300 ]; then
+        if [ $priority != 2 ]; then
+            php /usr/local/sbin/custom_monitor.php destination=$3 gateway=$4 priority=2 link=$6
+            priority=2
+        fi
+        echo "offline"
+    fi
+    if [ $total -gt 300 ]; then
+        if [ $priority != 1 ]; then
+            php /usr/local/sbin/custom_monitor.php destination=$3 gateway=$4 priority=1 link=$6
+            priority=1
+        fi
+        echo "online"
+    fi
     
+    sleep 5
 done
-#verifica_link ()
-#{
-#    while [ 1 -eq 1 ]
-#    do
-#        sleep 20        
-#        CONT2=0
-#        while [ $CONT2 -ne 3 ]
-#        do
-#            if [ "`ping -c 1 -S 189.44.64.173 8.8.8.8 | awk '{print $6}' | grep ttl | tr '=' ' ' | awk '{print $1}'`" = "ttl" ]; then
-#                RESP1="v"
-#            else
-#                RESP1="f"
-#            fi
-#            if [ "`ping -c 1 -S 189.44.64.173 8.8.8.8 | awk '{print $6}' | grep ttl | tr '=' ' ' | awk '{print $1}'`" = "ttl" ]; then
-#                RESP2="v"
-#            else
-#            RESP2="f"
-#            fi
-#            if [ "`ping -c 1 -S 189.44.64.173 8.8.8.8 | awk '{print $6}' | grep ttl | tr '=' ' ' | awk '{print $1}'`" = "ttl" ]; then
-#                RESP3="v"
-#            else
-#                RESP3="f"
-#            fi
-#            if [ "`ping -c 1 -S 189.44.64.173 8.8.8.8 | awk '{print $6}' | grep ttl | tr '=' ' ' | awk '{print $1}'`" = "ttl" ]; then
-#                RESP4="v"
-#            else
-#                RESP4="f"
-#            fi
-#            if [ "$LINK" = "TELEFONICA" ]; then
-#                if [ "$RESP1" = "v" -a "$RESP2" = "v" -a "$RESP3" = "f" -a "$RESP4" = "f" ] || [ "$RESP1" = "v" -a "$RESP2" = "f" -a "$RESP3" = "f" -a "$RESP4" = "f" ] || [ "$RESP1" = "f" -a "$RESP2" = "v" -a "$RESP3" = "f" -a "$RESP4" = "f" ] || [ "$RESP1" = "f" -a "$RESP2" = "f" -a "$RESP3" = "f" -a "$RESP4" = "f" ]; then
-#                    CONT2=$(($CONT2+1))
-#                fi
-#            elif [ "$LINK" = "GVT" ]; then
-#                if [ "$RESP1" = "v" -a "$RESP2" = "v" -a "$RESP3" = "v" -a "$RESP4" = "v" ] || [ "$RESP1" = "v" -a "$RESP2" = "f" -a "$RESP3" = "v" -a "$RESP4" = "v" ] || [ "$RESP1" = "f" -a "$RESP2" = "v" -a "$R
-#                    ESP3" = "v" -a "$RESP4" = "v" ] || [ "$RESP1" = "f" -a "$RESP2" = "f" -a "$RESP3" = "v" -a "$RESP4" = "v" ]; then
-#                    CONT2=$(($CONT2+1))
-#                fi
-#            fi
-#        done
-#        if [ "$CONT2" = "3" ] && [ "$LINK" = "TELEFONICA" ]; then
-#            route del default
-#            route add default 192.168.25.1
-#            CONT2=0
-#        elif [ "$CONT2" = "3" ] && [ "$LINK" = "GVT" ]; then
-#            route del default
-#            route add default 189.44.64.169 
-#            CONT2=0
-#        fi
-#    done
-#}
-#
 #case "$1" in
 #    start)
 #        verifica_link 2>/dev/null & 

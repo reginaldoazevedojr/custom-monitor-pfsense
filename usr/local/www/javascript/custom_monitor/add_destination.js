@@ -4,6 +4,15 @@ var active = 1;
 
 $(function () {
     var url = "custom_monitor/getDestination.php";
+    
+    $('.boxDestination').find('div').each(function() {
+        var id = $(this).attr('id');
+        if(id !== undefined){
+            close($(this));
+            boxes[ind] = $(this).children('p').children('b').text();
+            ind++;
+        }
+    });
 
     $('.addTracking').click(function (e) {
         e.preventDefault();

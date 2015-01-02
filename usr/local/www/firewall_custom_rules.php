@@ -30,9 +30,9 @@ if(isset($config['custom_monitor'])){
             $registered .= ' <div id="group_'. $i .'"><p><b>'.$name[1].'</b><button style="margin-left: 705px;" title="'.$name[1].'" class="closeTracking">Close</button></p><div style="border: 1px gray solid;padding: 10px;">';
             foreach ($custom_monitor as $index=>$link){
                 $registered .= '<p>
-                                    <label>'.$index.'</label>
+                                    <label>'.strtoupper($index).'</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label>IP Remoto</label>&nbsp;<input type="text" name="group[dest_'.$name[1].']['.$index.']" value="'.$link.'" />
+                                    <label>Remote IP</label>&nbsp;<input type="text" name="group[dest_'.$name[1].']['.$index.']" value="'.$link.'" />
                                   </p>';
             }
             $registered .= '</div></div>';
@@ -50,12 +50,14 @@ if (isset($_POST['groupTracking'])) {
             }
         }
     }
+    system("/etc/rc.custom_monitor stop > /dev/null &");
     write_config();
     $retval = 0;
     $retval = filter_configure();
     clear_subsystem_dirty('filter');
     pfSense_handle_custom_code("/usr/local/pkg/firewall_rules/apply");
     header("location: firewall_custom_rules.php");
+    system("/etc/rc.custom_monitor start > /dev/null &");
 }
 
 ?>

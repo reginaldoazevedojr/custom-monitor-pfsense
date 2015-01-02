@@ -30,9 +30,9 @@ if (isset($_POST['tracking'])) {
                                 }
                             }                            
                             echo '<p>
-                                    <label>'.$titulo.'</label>
+                                    <label>'.strtoupper($titulo).'</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label>IP Remoto</label>&nbsp;<input type="text" name="group[dest_'.$tracking.']['.$i[0].']" />
+                                    <label>Remote IP</label>&nbsp;<input type="text" name="group[dest_'.$tracking.']['.$i[0].']" />
                                   </p>
                             ';
                         }
