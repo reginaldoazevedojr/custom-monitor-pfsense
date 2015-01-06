@@ -21,7 +21,7 @@ if (
     if (is_array($custom_monitor)) {
         foreach ($custom_monitor as $key => $value) {
             $destination = str_replace("DEST_", "", strtoupper($key));        
-            if ($_GET['destination'] == $destination) {
+            if (strtoupper($_GET['destination']) == strtoupper($destination)) {
                 $config = changePriority(
                         $config, $_GET['gateway'], $_GET['priority'], $_GET['link']
                 );

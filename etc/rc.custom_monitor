@@ -24,7 +24,7 @@ if(isset($_GET['start']) || isset($_GET['START'])){
         foreach ($val as $index=>$ip){
             $link = strtoupper($index);
             $priority = getPriority($config, $gateway, $link);        
-            $ipInterface = getIpLink($config, $link);        
+            $ipInterface = getIpLink($config, $link);
             system("/usr/local/sbin/failover.sh $ipInterface $ip $destination $gateway $priority $link > /dev/null &");
         }    
     }
@@ -40,10 +40,10 @@ if($in == 0){
 }
 
 function getLoadBalance($config, $destination){
-    $rule = $config["filter"]['rule'];    
+    $rule = $config["filter"]['rule'];
     foreach ($rule as $dados) {
         if ($dados['interface'] == 'lan') {
-            if($dados['destination']['address'] == $destination){
+            if(strtoupper($dados['destination']['address']) == strtoupper($destination)){
                 $loadBalance =  $dados['gateway'];
                 return $loadBalance;
             }
