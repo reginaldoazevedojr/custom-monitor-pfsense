@@ -3,13 +3,13 @@
 statusPrev=0
 statusPrevTemp=0
 status=""
+priority=$5
 
 while [ 1 -eq 1 ]
 do        
     total=0
     prevent=3
-    swap=0
-    priority=$5        
+    swap=0    
     for i in 2 3 4 5 6 7 8
     do
         conn=`ping -t 3 -c 1 -S $1 $2 | egrep "ttl" | sed -r "s/(.*)(ttl)=([0-9]+)(.*)/\2/g"`        
