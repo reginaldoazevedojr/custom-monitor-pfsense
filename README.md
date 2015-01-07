@@ -2,7 +2,8 @@ Pfsense
 =======
 
 Esta implementação personalizada tem como objetivo monitorar diversos links de internet pelo pfsense 
-quando existe uma rede com mais de dois pfsense's remotos.
+quando existe uma rede com mais de dois pfsense's remotos.<br>
+Ela utiliza o gateway ```LoadBalance``` em cada regra de Lan e alterna sua prioridade conforme o status de cada Link de internet.
 
 Instalação
 =======
@@ -24,6 +25,6 @@ Na linha seguinte adicione o trecho de código: <br>
 
 ***
 <b>Feito estes passos o monitoramento já pode ser configurado pelo pfsense basta acessar o menu ```Firewall``` no item ```Custom Rules```. <br>
-Para configurar selecione o Destination e será apresentado os links de monitoramento e em cada link deve-se cadastrar o IP Remoto para determinação do status do link. Para visualizar os logs do monitoramento basta acessar o menu```status``` no item ```System Logs```.</b><br>
+Para configurar selecione o Destination e será apresentado os links de monitoramento e em cada link deve-se cadastrar o IP Remoto que determinará o status do link. Para visualizar os logs do monitoramento basta acessar o menu```status``` no item ```System Logs```.</b><br>
 
 <b>Para que a ferramenta funciona o LoadBalance deve está configurado para cada rule de lan utilizada.</b>
