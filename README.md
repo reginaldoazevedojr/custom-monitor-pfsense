@@ -19,7 +19,7 @@ Passo 3
 -------
 Editar o arquivo ```/usr/local/www/fbegin.inc```, encontre a linha: <br>
 ```$firewall_menu[] = array(gettext("Virtual IPs"), "/firewall_virtual_ip.php");``` <br>
-Na linha seguinte adicione o seguinte trecho de código: <br>
+Na linha seguinte adicione o trecho de código: <br>
 ```$firewall_menu[] = array(gettext("Custom Rules"), "/firewall_custom_rules.php");```
 
 
