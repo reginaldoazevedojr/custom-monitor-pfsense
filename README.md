@@ -14,7 +14,7 @@ Fazer upload dos arquivos para o pfsense.
 
 Passo 2
 -------
-Dá permissão de execução para os arquivos ```/usr/local/sbin/failover.sh```, ```/etc/rc.custom_monitor``` e ```/usr/local/etc/rc.d/custom_monitor.sh```
+Permissão de execução para os arquivos ```/usr/local/sbin/failover.sh```, ```/etc/rc.custom_monitor``` e ```/usr/local/etc/rc.d/custom_monitor.sh```
 
 Passo 3
 -------
