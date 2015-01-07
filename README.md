@@ -3,14 +3,14 @@ Pfsense
 
 Esta implementação personalizada tem como objetivo monitorar diversos links de internet pelo pfsense 
 quando existe uma rede com mais de dois pfsense's remotos.<br>
-Ela utiliza o gateway ```LoadBalance``` em cada regra de Lan e alterna sua prioridade conforme o status de cada Link de internet.
+A ferramenta utiliza o gateway ```LoadBalance``` em cada regra de Lan e alterna sua prioridade conforme o status de cada Link de internet.
 
 Instalação
 =======
 
 Passo 1
 -------
-Fazer upload dos arquivos para o pfsense.
+Upload dos arquivos para o pfsense.
 
 Passo 2
 -------
@@ -18,7 +18,7 @@ Permissão de execução para os arquivos ```/usr/local/sbin/failover.sh```, ```
 
 Passo 3
 -------
-Editar o arquivo ```/usr/local/www/fbegin.inc```, encontre a linha: <br>
+Edite o arquivo ```/usr/local/www/fbegin.inc```, encontre a linha: <br>
 ```$firewall_menu[] = array(gettext("Virtual IPs"), "/firewall_virtual_ip.php");``` <br>
 Na linha seguinte adicione o trecho de código: <br>
 ```$firewall_menu[] = array(gettext("Custom Rules"), "/firewall_custom_rules.php");``` <br>
