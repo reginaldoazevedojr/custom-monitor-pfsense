@@ -26,7 +26,7 @@ if (isset($_POST['tracking'])) {
                             $i = explode('|', $item);                            
                             foreach($config['interfaces'] as $interface){
                                 if($interface['gateway'] == $i[0]){
-                                    $titulo = $interface['descr'];
+                                    $titulo = $interface['gateway'];
                                 }
                             }                            
                             echo '<p>
